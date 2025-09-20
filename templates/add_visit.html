@@ -1,50 +1,51 @@
 {% extends "base.html" %}
-{% block title %}Add Visit{% endblock %}
 {% block content %}
 <h2>Add a Visit</h2>
-
 <form method="POST">
-    <label>Host Mosque/Musallah:</label>
-    <select name="host_mosque" required>
-        {% for id, name in mosques %}
-        <option value="{{id}}">{{name}}</option>
-        {% endfor %}
-    </select>
+    <div class="mb-3">
+        <label>Host Mosque/Musallah:</label>
+        <select class="form-select" name="host_mosque" required>
+            {% for id, name in mosques %}
+                <option value="{{id}}">{{name}}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <label>Visiting Mosque (WA):</label>
-    <select name="visiting_mosque">
-        <option value="">--None--</option>
-        {% for id, name in mosques %}
-        <option value="{{id}}">{{name}}</option>
-        {% endfor %}
-    </select>
+    <div class="mb-3">
+        <label>Visiting Mosque/Musallah (WA):</label>
+        <select class="form-select" name="visiting_mosque">
+            <option value="">--None--</option>
+            {% for id, name in mosques %}
+                <option value="{{id}}">{{name}}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <label>Visiting Jamat (Interstate / Overseas):</label>
-    <select name="visiting_jamat">
-        <option value="">--None--</option>
-        {% for id, name in ej_options %}
-        <option value="{{id}}">{{name}}</option>
-        {% endfor %}
-    </select>
+    <div class="mb-3">
+        <label>Visiting Jamat (Interstate / Overseas):</label>
+        <select class="form-select" name="visiting_jamat">
+            <option value="">--None--</option>
+            {% for id, name in ej_options %}
+                <option value="{{id}}">{{name}}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <label>Start Date:</label>
-    <input type="date" id="start_date" name="start_date" required>
+    <div class="mb-3">
+        <label>Start Date:</label>
+        <input type="date" class="form-control" name="start_date" required>
+    </div>
 
-    <label>End Date:</label>
-    <input type="date" id="end_date" name="end_date" required>
+    <div class="mb-3">
+        <label>End Date:</label>
+        <input type="date" class="form-control" name="end_date" required>
+    </div>
 
-    <label>Notes:</label>
-    <textarea name="notes" placeholder="Optional details..."></textarea>
+    <div class="mb-3">
+        <label>Notes:</label>
+        <textarea class="form-control" name="notes"></textarea>
+    </div>
 
-    <input type="hidden" name="confirm" value="1">
-    <button type="submit">Add Visit</button>
+    <button class="btn btn-primary" type="submit">Add Visit</button>
 </form>
-
-<script>
-const start = document.getElementById('start_date');
-const end = document.getElementById('end_date');
-start.addEventListener('change', () => {
-    end.min = start.value; // End date cannot be before start date
-});
-</script>
 {% endblock %}
