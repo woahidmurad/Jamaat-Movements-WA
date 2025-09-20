@@ -1,67 +1,90 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Dashboard / Statistics</h2>
+<div class="container mt-4">
+    <h2>Dashboard / Statistics</h2>
 
-<form method="POST" class="row g-3 mb-3">
-    <div class="col-md-3">
-        <label>Start Date:</label>
-        <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
-    </div>
-    <div class="col-md-3">
-        <label>End Date:</label>
-        <input type="date" class="form-control" name="end_date" value="{{ end_date }}" min="{{ start_date }}">
-    </div>
-    <div class="col-md-3">
-        <label>Filter by Host Mosque:</label>
-        <select class="form-select" name="host_filter">
-            <option value="all">All Mosques</option>
-            {% for id, name in mosques_list %}
-                <option value="{{id}}" {% if host_filter==id|string %}selected{% endif %}>{{name}}</option>
+    <form method="POST" class="row g-3 mb-3">
+        <div class="col-md-3">
+            <label>Start Date:</label>
+            <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+        </div>
+        <div class="col-md-3">
+            <label>End Date:</label>
+            <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+        </div>
+        <div class="col-md-3">
+            <label>Filter by Host Mosque:</label>
+            <select class="form-select" name="host_filter">
+                <option value="all">All Mosques</option>
+                {% for m in mosques %}
+                    <option value="{{ m['mosque_id'] }}" {% if host_filter == m['mosque_id']|string %}selected{% endif %}>
+                        {{ m['name'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Filter by Visiting Mosque:</label>
+            <select class="form-select" name="visiting_filter">
+                <option value="all">All Visiting Mosques</option>
+                {% for m in visiting_mosques %}
+                    <option value="{{ m['mosque_id'] }}" {% if visiting_filter == m['mosque_id']|string %}selected{% endif %}>
+                        {{ m['name'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-12 mt-2">
+            <button class="btn btn-primary" type="submit">Filter</button>
+        </div>
+    </form>
+
+    <h4>History of Visits</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Host Mosque</th>
+                <th>Visiting Mosque</th>
+                <th>Visiting Jamat</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in visits %}
+            <tr>
+                <td>{{ v['start_date'] }}</td>
+                <td>{{ v['end_date'] }}</td>
+                <td>{{ v['host'] }}</td>
+                <td>{{ v['visiting_mosque'] or '' }}</td>
+                <td>{{ v['visiting_jamat'] or '' }}</td>
+                <td>{{ v['notes'] or '' }}</td>
+            </tr>
             {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-3 align-self-end">
-        <button class="btn btn-primary" type="submit">Filter</button>
-    </div>
-</form>
+        </tbody>
+    </table>
 
-<h4>History of Visits</h4>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Host Mosque</th>
-            <th>Visiting Mosque</th>
-            <th>Visiting Jamat</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for v in visits %}
-        <tr>
-            <td>{{v[1]}}</td>
-            <td>{{v[2]}}</td>
-            <td>{{v[3]}}</td>
-            <td>{{v[4] or ''}}</td>
-            <td>{{v[5] or ''}}</td>
-            <td>{{v[6] or ''}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <h4>Bar Charts</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Hosted Jamats</h5>
+            {% if host_chart %}
+            <img src="data:image/png;base64,{{ host_chart }}" class="img-fluid">
+            {% else %}
+            <p>No data for chart.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h5>Visiting Jamats</h5>
+            {% if visiting_chart %}
+            <img src="data:image/png;base64,{{ visiting_chart }}" class="img-fluid">
+            {% else %}
+            <p>No data for chart.</p>
+            {% endif %}
+        </div>
+    </div>
 
-<h4>Bar Charts</h4>
-<div class="row">
-  <div class="col-md-6">
-    <h5>Hosted Jamats</h5>
-    <img src="data:image/png;base64,{{ host_chart }}" class="img-fluid">
-  </div>
-  <div class="col-md-6">
-    <h5>Visiting Jamats</h5>
-    <img src="data:image/png;base64,{{ visiting_chart }}" class="img-fluid">
-  </div>
+    <a class="btn btn-success mt-3" href="/download_csv">Download CSV of all visits</a>
 </div>
-
-<a class="btn btn-success mt-3" href="/download_csv">Download CSV of all visits</a>
 {% endblock %}

@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{mosque[1]}} Details</title>
-</head>
-<body>
-    <h2>{{mosque[1]}}</h2>
-    <p><strong>Address:</strong> {{mosque[2]}}</p>
-    <p><strong>Phone:</strong> {{mosque[3]}}</p>
-    <a href="/">Back to Home</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ mosque['name'] }}</h2>
+    <p><strong>Address:</strong> {{ mosque['address'] }}</p>
+    <p><strong>Phone:</strong> {{ mosque['phone'] }}</p>
+    <p><strong>Notes:</strong> {{ mosque['notes'] }}</p>
+
+    <h4 class="mt-4">Visits Hosted</h4>
+    {% if visits %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Visiting Mosque</th>
+                <th>Visiting Jamat</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in visits %}
+            <tr>
+                <td>{{ v['start_date'] }}</td>
+                <td>{{ v['end_date'] }}</td>
+                <td>{{ v['visiting_mosque'] or '' }}</td>
+                <td>{{ v['visiting_jamat'] or '' }}</td>
+                <td>{{ v['notes'] or '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No visits recorded for this mosque.</p>
+    {% endif %}
+</div>
+{% endblock %}

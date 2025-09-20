@@ -1,51 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Add a Visit</h2>
-<form method="POST">
-    <div class="mb-3">
-        <label>Host Mosque/Musallah:</label>
-        <select class="form-select" name="host_mosque" required>
-            {% for id, name in mosques %}
-                <option value="{{id}}">{{name}}</option>
-            {% endfor %}
-        </select>
-    </div>
+<div class="container mt-4">
+    <h2>Add Visit</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Host Mosque</label>
+            <select class="form-select" name="host_mosque" required>
+                {% for m in mosques %}
+                <option value="{{ m[0] }}">{{ m[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="mb-3">
-        <label>Visiting Mosque/Musallah (WA):</label>
-        <select class="form-select" name="visiting_mosque">
-            <option value="">--None--</option>
-            {% for id, name in mosques %}
-                <option value="{{id}}">{{name}}</option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Visiting Mosque (Optional)</label>
+            <select class="form-select" name="visiting_mosque">
+                <option value="">-- Select --</option>
+                {% for m in mosques %}
+                <option value="{{ m[0] }}">{{ m[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="mb-3">
-        <label>Visiting Jamat (Interstate / Overseas):</label>
-        <select class="form-select" name="visiting_jamat">
-            <option value="">--None--</option>
-            {% for id, name in ej_options %}
-                <option value="{{id}}">{{name}}</option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Visiting Jamat (Optional)</label>
+            <select class="form-select" name="visiting_jamat">
+                <option value="">-- Select --</option>
+                {% for ej in ej_options %}
+                <option value="{{ ej[0] }}">{{ ej[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="mb-3">
-        <label>Start Date:</label>
-        <input type="date" class="form-control" name="start_date" required>
-    </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Start Date</label>
+                <input type="date" class="form-control" name="start_date" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">End Date</label>
+                <input type="date" class="form-control" name="end_date" required>
+            </div>
+        </div>
 
-    <div class="mb-3">
-        <label>End Date:</label>
-        <input type="date" class="form-control" name="end_date" required>
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" name="notes" rows="3"></textarea>
+        </div>
 
-    <div class="mb-3">
-        <label>Notes:</label>
-        <textarea class="form-control" name="notes"></textarea>
-    </div>
-
-    <button class="btn btn-primary" type="submit">Add Visit</button>
-</form>
+        <button type="submit" class="btn btn-primary">Add Visit</button>
+    </form>
+</div>
 {% endblock %}
