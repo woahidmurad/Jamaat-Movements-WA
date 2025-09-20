@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jamat Statistics</title>
+</head>
+<body>
+    <h2>Jamat Visits Statistics</h2>
+    <form method="POST">
+        <label>Start Month (YYYY-MM):</label>
+        <input type="month" name="start_month">
+        <label>End Month (YYYY-MM):</label>
+        <input type="month" name="end_month">
+        <button type="submit">Show</button>
+    </form>
+    <br>
+    {{ chart|safe }}
+</body>
+</html>

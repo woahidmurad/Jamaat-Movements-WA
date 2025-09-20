@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Jamat Movement{% endblock %}
+
+{% block content %}
+<h1>Welcome to WA Jamat Movement Tracker</h1>
+<p>Select a menu option to manage or view jamats.</p>
+
+<h2>Mosques / Musallah</h2>
+<ul>
+{% for id, name in mosques %}
+    <li>{{ name }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

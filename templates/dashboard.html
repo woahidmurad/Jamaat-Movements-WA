@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Dashboard / Statistics</h2>
+
+<form method="POST">
+    <label>Start Date:</label>
+    <input type="date" name="start_date" value="{{start_date}}">
+    <label>End Date:</label>
+    <input type="date" name="end_date" value="{{end_date}}">
+    <label>Filter by Host Mosque:</label>
+    <select name="mosque_filter">
+        <option value="">All Mosques</option>
+        {% for id, name in mosques %}
+        <option value="{{id}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<h3>History of Visits</h3>
+{% if table %}
+{{ table|safe }}
+{% else %}
+<p>No visits found in the selected range.</p>
+{% endif %}
+
+<h3>Hosted Jamats per Mosque</h3>
+{% if host_chart %}
+<img src="data:image/png;base64,{{ host_chart }}">
+{% endif %}
+
+<h3>Visiting Jamats per Mosque</h3>
+{% if visit_chart %}
+<img src="data:image/png;base64,{{ visit_chart }}">
+{% endif %}
+
+<a href="/export_csv">Download CSV of all visits</a>
+{% endblock %}
